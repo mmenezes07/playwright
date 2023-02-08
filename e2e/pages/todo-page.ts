@@ -10,6 +10,7 @@ export class ToDoPage {
   readonly allTab: Locator;
   readonly activeTab: Locator;
   readonly completedTab: Locator;
+  readonly clearCompletedButton: Locator;
   
 
   constructor(page: Page) {
@@ -21,6 +22,7 @@ export class ToDoPage {
     this.allTab = page.locator("//a[@href='#/']");
     this.activeTab = page.locator("//a[@href='#/active']");
     this.completedTab = page.locator("//a[@href='#/completed']");
+    this.clearCompletedButton = page.locator("//button[@class='clear-completed']");
   }
 
   async goto() {
@@ -98,5 +100,9 @@ export class ToDoPage {
 
   async selectCompletedTab() {
     await this.completedTab.click();
+  }
+
+  async clearCompleted() {
+    await this.clearCompletedButton.click();
   }
 }

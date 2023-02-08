@@ -83,4 +83,27 @@ test.describe('Todo MVC Test Suite', () => {
         expect(await toDoPage.isItemPresent(activeItem)).toBeTruthy();
         expect(await toDoPage.isItemPresent(completedItem)).toBeFalsy();
     });
+
+    test('Clear completed items', async () => {
+        let activeItem = faker.lorem.sentence();
+        let completedItem = faker.lorem.sentence();
+        await toDoPage.selectAllTab();
+        
+        // given I have marked a todo item as complete
+        await toDoPage.createNew(activeItem);
+        await toDoPage.createNew(completedItem);
+        await toDoPage.markAsComplete(completedItem);
+
+        // when I click clear completed
+        await toDoPage.clearCompleted();
+
+        // Then the completed todo item is removed from my todo list
+        expect(await toDoPage.isItemPresent(completedItem)).toBeFalsy();
+        expect(await toDoPage.isItemPresent(activeItem)).toBeTruthy();
+        // And the todo item is moved to the Completed list
+        // bug?? if completed item is cleared, should it be in the completed tab?
+        await toDoPage.selectCompletedTab();
+        expect(await toDoPage.isItemPresent(completedItem)).toBeTruthy(); // test will fail here
+        expect(await toDoPage.isItemPresent(completedItem)).toBeFalsy();
+    });
 });
