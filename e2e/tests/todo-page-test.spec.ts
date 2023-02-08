@@ -1,5 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { ToDoPage } from "../pages/todo-page";
+import { faker } from '@faker-js/faker';
+
 
 
 test.describe('Test Suite', () => {
@@ -11,8 +13,8 @@ test.describe('Test Suite', () => {
     });
 
     test('New todo appears last on list', async () => {
-        let newItem = "test 1";
-        let newItem2 = "test 2";
+        let newItem = faker.lorem.sentence();
+        let newItem2 = faker.lorem.sentence();
         
         await toDoPage.createNew(newItem);
         expect(await toDoPage.getItemCount()).toEqual(1);
@@ -25,9 +27,9 @@ test.describe('Test Suite', () => {
     });
 
     test('Modify todo item', async () => {
-        let oldItem = "test 3";
-        let updatedItem = "test 4";
-        
+        let oldItem = faker.lorem.sentence();
+        let updatedItem = faker.lorem.sentence();
+
         await toDoPage.createNew(oldItem);
 
         await toDoPage.editItem(oldItem, updatedItem);
@@ -37,7 +39,7 @@ test.describe('Test Suite', () => {
     });
 
     test('Delete todo item', async () => {
-        let item = "test 5";
+        let item = faker.lorem.sentence();
         
         await toDoPage.createNew(item);
         await toDoPage.delete(item);
