@@ -25,7 +25,7 @@ test.describe('Todo Test Suite', () => {
             expect(await toDoPage.getLastItem()).toEqual(firstItem);
         });
 
-        // add another item to tests since if there is only a single item, it is always last
+        // add another item to test since if there is only a single item, it is always last
         await test.step('then it appears last when there are multiple items', async () => {
             await toDoPage.createNew(secondItem);
             expect(await toDoPage.getItemCount()).toEqual(2);
@@ -83,7 +83,7 @@ test.describe('Todo Test Suite', () => {
         });
 
         await test.step('and it is crossed off my list', async () => {
-            expect(await toDoPage.isTextStrikeThrough(toDoItem)).toBeTruthy();
+            expect(await toDoPage.isTextStruckThrough(toDoItem)).toBeTruthy();
         });
         
     });
@@ -131,8 +131,8 @@ test.describe('Todo Test Suite', () => {
         // bug?? if completed item is cleared, should it be in the completed tab?
         await test.step('And the todo item is moved to the Completed list', async () => {
             await toDoPage.selectCompletedTab();
+            expect(await toDoPage.isItemPresent(activeItem)).toBeFalsy();
             expect(await toDoPage.isItemPresent(completedItem)).toBeTruthy(); // test will fail here
-            expect(await toDoPage.isItemPresent(completedItem)).toBeFalsy();
         });
     });
 });

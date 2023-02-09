@@ -4,7 +4,6 @@ import { Locator, Page } from '@playwright/test';
 export class ToDoPage {
   private readonly page: Page;
   private readonly newToDo: Locator;
-  private readonly url: string = "https://todomvc.com/examples/react/#/";
   private readonly toDoListItems: Locator;
   private readonly itemCount: Locator;
   private readonly listItemEdit: Locator;
@@ -12,8 +11,8 @@ export class ToDoPage {
   private readonly activeTab: Locator;
   private readonly completedTab: Locator;
   private readonly clearCompletedButton: Locator;
+  private readonly url: string = "https://todomvc.com/examples/react/#/";
   
-
   constructor(page: Page) {
     this.page = page;
     this.newToDo = page.locator("//input[@class='new-todo']");
@@ -32,6 +31,10 @@ export class ToDoPage {
 
   async createNew(title: string) {
     await this.newToDo.type(title);
+    await this.pressEnter();
+  }
+
+  private async pressEnter() {
     await this.page.keyboard.press("Enter");
   }
 
@@ -48,12 +51,16 @@ export class ToDoPage {
     return this.page.locator(`//ul[@class='todo-list']/li//label[text()='${itemName}']`);
   }
 
+  async doubleClickItem(itemName: string) {
+    await (await this.getItem(itemName)).dblclick();
+  }
+
   async editItem(oldItemName: string, updatedItemName: string) {
-    await (await this.getItem(oldItemName)).dblclick();
+    await this.doubleClickItem(oldItemName);
 
     await this.listItemEdit.clear();
     await this.listItemEdit.type(updatedItemName);
-    await this.page.keyboard.press("Enter");
+    await this.pressEnter();
   }
 
   async isItemPresent(itemName: string) {
@@ -88,7 +95,7 @@ export class ToDoPage {
     return await toggleCheckbox.isChecked();
   }
 
-  async isTextStrikeThrough(itemName: string) {
+  async isTextStruckThrough(itemName: string) {
     let label = await this.getItem(itemName);
     let textDecoration = await label.evaluate((element) =>
       window.getComputedStyle(element).getPropertyValue('text-decoration')
