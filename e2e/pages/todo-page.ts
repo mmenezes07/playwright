@@ -1,5 +1,6 @@
 import { Locator, Page } from '@playwright/test';
 
+
 export class ToDoPage {
   private readonly page: Page;
   private readonly newToDo: Locator;
@@ -60,9 +61,10 @@ export class ToDoPage {
   }
 
   async delete(itemName: string) {
-    await (await this.getItem(itemName)).hover();
-    // TODO clean this up. create a locator???
-    await this.page.locator(`//ul[@class='todo-list']/li//label[text()='${itemName}']/following-sibling::button[@class='destroy']`).click();
+    let itemLocator = await this.getItem(itemName);
+    await itemLocator.hover(); // hover over the item for the delete button to appear
+    let deleteButton = itemLocator.locator("//following-sibling::button[@class='destroy']")
+    await deleteButton.click();
   }
 
   async markAsComplete(itemName: string) {
@@ -74,11 +76,16 @@ export class ToDoPage {
   }
 
   private async toggle(itemName: string, status: boolean) {
-    await this.page.locator(`//ul[@class='todo-list']/li//label[text()='${itemName}']/preceding-sibling::input`).setChecked(status);
+    let itemLocator = await this.getItem(itemName);
+    let toggleCheckbox = itemLocator.locator("//preceding-sibling::input")
+    await toggleCheckbox.setChecked(status);
   }
 
   async isItemChecked(itemName: string) {
-    return await this.page.locator(`//ul[@class='todo-list']/li//label[text()='${itemName}']/preceding-sibling::input`).isChecked();
+    let itemLocator = await this.getItem(itemName);
+    let toggleCheckbox = itemLocator.locator("//preceding-sibling::input")
+
+    return await toggleCheckbox.isChecked();
   }
 
   async isTextStrikeThrough(itemName: string) {
