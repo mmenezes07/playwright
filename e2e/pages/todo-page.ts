@@ -1,16 +1,16 @@
 import { Locator, Page } from '@playwright/test';
 
 export class ToDoPage {
-  readonly page: Page;
-  readonly newToDo: Locator;
-  readonly url: string = "https://todomvc.com/examples/react/#/";
-  readonly toDoListItems: Locator;
-  readonly itemCount: Locator;
-  readonly listItemEdit: Locator;
-  readonly allTab: Locator;
-  readonly activeTab: Locator;
-  readonly completedTab: Locator;
-  readonly clearCompletedButton: Locator;
+  private readonly page: Page;
+  private readonly newToDo: Locator;
+  private readonly url: string = "https://todomvc.com/examples/react/#/";
+  private readonly toDoListItems: Locator;
+  private readonly itemCount: Locator;
+  private readonly listItemEdit: Locator;
+  private readonly allTab: Locator;
+  private readonly activeTab: Locator;
+  private readonly completedTab: Locator;
+  private readonly clearCompletedButton: Locator;
   
 
   constructor(page: Page) {
@@ -69,7 +69,7 @@ export class ToDoPage {
     await this.toggle(itemName, true);
   }
 
-  async markAsInComplete(itemName: string) {
+  async markAsActive(itemName: string) {
     await this.toggle(itemName, false);
   }
 
